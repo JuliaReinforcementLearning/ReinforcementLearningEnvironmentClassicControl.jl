@@ -5,5 +5,10 @@ else
     using Test
 end
 
-# write your own tests here
-@test 1 == 2
+import RLEnvClassicControl: reset!, interact!, getstate
+for x in [CartPole, MountainCar, Pendulum]
+    env = x()
+    reset!(env)
+    @test typeof(interact!(1, env)) == Tuple{Array{Float64, 1}, Float64, Bool}
+    @test typeof(getstate(env)) == Tuple{Array{Float64, 1}, Bool}
+end
