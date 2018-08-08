@@ -1,6 +1,6 @@
 # RLEnvClassicControl
 
-[![Build Status](https://travis-ci.org/JuliaReinforcementLearning/RLEnvClassicControl.jl.svg?branch=master)](https://travis-ci.org/JuliaReinforcementLearning/RLEnvClassicControl.jl)
+[![Build Status](https://travis-ci.com/JuliaReinforcementLearning/RLEnvClassicControl.jl.svg?branch=master)](https://travis-ci.com/JuliaReinforcementLearning/RLEnvClassicControl.jl)
 
 [![Coverage Status](https://coveralls.io/repos/JuliaReinforcementLearning/RLEnvClassicControl.jl/badge.svg?branch=master&service=github)](https://coveralls.io/github/JuliaReinforcementLearning/RLEnvClassicControl.jl?branch=master)
 
