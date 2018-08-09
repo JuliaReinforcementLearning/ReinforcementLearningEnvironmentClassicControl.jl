@@ -69,3 +69,29 @@ function interact!(a, env::CartPole{T}) where T <: Number
                env.t >= env.params.maxsteps
     env.state, 1., env.done
 end
+
+function plotendofepisode(x, y, d)
+    if d
+        setmarkercolorind(7)
+        setmarkertype(-1)
+        setmarkersize(6)
+        polymarker([x], [y])
+    end
+    return nothing
+end
+function plotenv(env::CartPole, s, a, r, d)
+    x, xdot, theta, thetadot = s
+    l = 2 * env.params.halflength
+    clearws()
+    setviewport(0, 1, 0, 1)
+    xthreshold = env.params.xthreshold
+    setwindow(-xthreshold, xthreshold, -.1, l + .1)
+    fillarea([x-.5, x-.5, x+.5, x+.5], [-.05, 0, 0, -.05])
+    setlinecolorind(4)
+    setlinewidth(3)
+    polyline([x, x + l * sin(theta)], [0, l * cos(theta)])
+    setlinecolorind(2)
+    drawarrow(x + (a == 1) - .5, -.025, x + 1.4 * (a==1) - .7, -.025)
+    plotendofepisode(xthreshold - .2, l, d)
+    updatews()
+end

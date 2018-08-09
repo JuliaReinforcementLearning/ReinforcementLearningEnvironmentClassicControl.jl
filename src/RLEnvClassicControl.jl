@@ -1,8 +1,8 @@
 __precompile__()
 module RLEnvClassicControl
-using Reexport
+using Reexport, GR
 @reexport using ReinforcementLearning
-import ReinforcementLearning: interact!, getstate, reset!, Box
+import ReinforcementLearning: interact!, getstate, reset!, Box, plotenv
 
 include("cartpole.jl")
 include("mountaincar.jl")
