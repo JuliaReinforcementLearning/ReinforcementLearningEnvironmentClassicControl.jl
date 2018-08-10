@@ -11,13 +11,13 @@ rlsetup = RLSetup(Sarsa(ns = 8*8^2, na = 3, α = 1/8, λ = .96, γ = 1.),
                   preprocessor = preprocessor,
                   policy = EpsilonGreedyPolicy(0),
                   callbacks = [Visualize(wait = .02)])
-info("Before learning.") 
+@info("Before learning.") 
 run!(rlsetup)
 rlsetup.callbacks = [EvaluationPerEpisode(TimeSteps())]
 rlsetup.stoppingcriterion = ConstantNumberSteps(10^5)
 @time learn!(rlsetup)
 getvalue(rlsetup.callbacks[1])
-info("After learning.")
+@info("After learning.")
 rlsetup.callbacks = [Visualize(wait = .02)]
 rlsetup.stoppingcriterion = ConstantNumberSteps(400)
 run!(rlsetup)

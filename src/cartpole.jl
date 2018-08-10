@@ -33,7 +33,7 @@ function CartPole(; T = Float64, gravity = T(9.8), masscart = T(1.),
 end
 
 function reset!(env::CartPole{T}) where T <: Number
-    env.state[:] = T(.1) * rand(T, 4) - T(.05)
+    env.state[:] = T(.1) * rand(T, 4) .- T(.05)
     env.t = 0
     env.done = false
     env.state

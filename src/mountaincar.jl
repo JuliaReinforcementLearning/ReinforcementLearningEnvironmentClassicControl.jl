@@ -55,13 +55,13 @@ end
 # adapted from https://github.com/JuliaML/Reinforce.jl/blob/master/src/envs/mountain_car.jl
 height(xs) = sin(3 * xs)*0.45 + 0.55
 rotate(xs, ys, θ) = xs*cos(θ) - ys*sin(θ), ys*cos(θ) + xs*sin(θ)
-translate(xs, ys, t) = xs + t[1], ys + t[2]
+translate(xs, ys, t) = xs .+ t[1], ys .+ t[2]
 function plotenv(env::MountainCar, s, a, r, d)
     clearws()
     setviewport(0, 1, 0, 1)
     setwindow(env.params.minpos - .1, env.params.maxpos + .2, -.1,
               height(env.params.maxpos) + .2)
-    xs = linspace(env.params.minpos, env.params.maxpos, 100)
+    xs = LinRange(env.params.minpos, env.params.maxpos, 100)
     ys = height.(xs)
     polyline(xs, ys)
     x = s[1]
@@ -71,7 +71,7 @@ function plotenv(env::MountainCar, s, a, r, d)
     clearance = .2*carheight
     xs = [-carwidth/2, -carwidth/2, carwidth/2, carwidth/2]
     ys = [0, carheight, carheight, 0]
-    ys += clearance
+    ys .+= clearance
     xs, ys = rotate(xs, ys, θ)
     xs, ys = translate(xs, ys, [x, height(x)])
     fillarea(xs, ys)

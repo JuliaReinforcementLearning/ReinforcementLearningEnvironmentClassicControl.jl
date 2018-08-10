@@ -30,7 +30,7 @@ anglenormalize(x) = ((x + pi) % (2*pi)) - pi
 getstate(env::Pendulum) = (pendulumobservation(env.state), env.done)
 function reset!(env::Pendulum{T}) where T
     box = env.observation_space
-    env.state[:] = 2 * rand(T, 2) - 1
+    env.state[:] = 2 * rand(T, 2) .- 1
     env.t = 0
     env.done = false
     pendulumobservation(env.state)
