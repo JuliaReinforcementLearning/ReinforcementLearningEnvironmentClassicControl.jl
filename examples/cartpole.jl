@@ -9,7 +9,7 @@ rlsetup = RLSetup(ActorCriticPolicyGradient(ns = 4, na = 2, α = .02,
 run!(rlsetup)
 rlsetup.callbacks = [EvaluationPerEpisode(TotalReward())]
 rlsetup.stoppingcriterion = ConstantNumberSteps(10^5)
-learn!(rlsetup)
+@time learn!(rlsetup)
 getvalue(rlsetup.callbacks[1])
 @info("After learning.")
 rlsetup.callbacks = [Visualize(wait = .02)]
