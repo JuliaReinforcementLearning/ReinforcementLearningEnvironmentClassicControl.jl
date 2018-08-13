@@ -1,4 +1,5 @@
 # run this file with julia -p 4 to use 4 cores in the comparison
+using JLD2, Compat.Distributed
 @everywhere begin
 using RLEnvClassicControl, Flux
 getenv() = (CartPole(), 4, 2)
@@ -52,7 +53,6 @@ rlsetupcreators = Dict("linear ACPG" => acpg, "DQN" => dqn,
 end # everywhere
 @time res = compare(rlsetupcreators, 10, verbose = true)
 
-using JLD2
 @save tempname() * ".jld2" res
 
 a = plotcomparison(res);

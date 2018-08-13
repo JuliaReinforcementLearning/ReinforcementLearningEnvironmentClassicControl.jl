@@ -1,4 +1,5 @@
 using RLEnvClassicControl
+using Compat: @info
 
 env = CartPole()
 rlsetup = RLSetup(ActorCriticPolicyGradient(ns = 4, na = 2, α = .02, 

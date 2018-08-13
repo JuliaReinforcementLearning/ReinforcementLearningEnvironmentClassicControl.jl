@@ -1,6 +1,6 @@
 __precompile__()
 module RLEnvClassicControl
-using Reexport, GR
+using Reexport, GR, Compat
 @reexport using ReinforcementLearning
 import ReinforcementLearning: interact!, getstate, reset!, Box, plotenv
 

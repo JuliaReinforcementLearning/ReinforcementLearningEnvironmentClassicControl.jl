@@ -1,4 +1,5 @@
 using RLEnvClassicControl
+using Compat: @info
 
 env = MountainCar(maxsteps = 10^4)
 high = [.5, .07]
