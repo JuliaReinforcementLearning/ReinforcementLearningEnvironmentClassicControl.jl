@@ -1,11 +1,11 @@
-using RLEnvClassicControl
+using ReinforcementLearningEnvironmentClassicControl
 @static if VERSION < v"0.7.0-DEV.2005"
     using Base.Test
 else
     using Test
 end
 
-import RLEnvClassicControl: reset!, interact!, getstate
+import ReinforcementLearningEnvironmentClassicControl: reset!, interact!, getstate
 for x in [CartPole, MountainCar, Pendulum]
     env = x()
     reset!(env)

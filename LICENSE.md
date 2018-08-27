@@ -1,4 +1,4 @@
-The RLEnvClassicControl.jl package is licensed under the MIT "Expat" License:
+The ReinforcementLearningEnvironmentClassicControl.jl package is licensed under the MIT "Expat" License:
 
 > Copyright (c) 2018: Johanni Brea.
 >

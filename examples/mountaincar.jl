@@ -1,4 +1,4 @@
-using RLEnvClassicControl
+using ReinforcementLearningEnvironmentClassicControl
 using Compat: @info
 
 env = MountainCar(maxsteps = 10^4)

@@ -1,7 +1,7 @@
 # run this file with julia -p 4 to use 4 cores in the comparison
 using JLD2, Compat.Distributed
 @everywhere begin
-using RLEnvClassicControl, Flux
+using ReinforcementLearningEnvironmentClassicControl, Flux
 getenv() = (CartPole(), 4, 2)
 # getenv() = (MountainCar(maxsteps = 10^4), 2, 3)
 function setup(learner, env, preprocessor = NoPreprocessor())
