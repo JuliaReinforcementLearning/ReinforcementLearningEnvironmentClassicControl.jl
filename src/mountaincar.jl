@@ -5,27 +5,34 @@ struct MountainCarParams{T}
     goalpos::T
     maxsteps::Int64
 end
-mutable struct MountainCar{T}
+
+mutable struct MountainCar{T} <: AbstractEnv
     params::MountainCarParams{T}
-    observation_space::Box{T}
+    actionspace::DiscreteSpace
+    observation_space::BoxSpace{T}
     state::Array{T, 1}
     done::Bool
     t::Int64
 end
+
 function MountainCar(; T = Float64, minpos = T(-1.2), maxpos = T(.6),
                        maxspeed = T(.07), goalpos = T(.5), maxsteps = 200)
-    env = MountainCar(MountainCarParams(minpos, maxpos, maxspeed, goalpos,
-                                        maxsteps),
-                      Box([minpos, -maxspeed], [maxpos, maxspeed]),
+    env = MountainCar(MountainCarParams(minpos, maxpos, maxspeed, goalpos, maxsteps),
+                      DiscreteSpace(3, 1),
+                      BoxSpace([minpos, -maxspeed], [maxpos, maxspeed]),
                       zeros(T, 2),
-                      false, 0)
+                      false,
+                      0)
     reset!(env)
     env
 end
 
+actionspace(env::MountainCar) = env.actionspace
+
 function getstate(env::MountainCar)
     env.state, env.done
 end
+
 function reset!(env::MountainCar{T}) where T
     env.state[1] = .2 * rand(T) - .6
     env.state[2] = 0.
@@ -34,7 +41,7 @@ function reset!(env::MountainCar{T}) where T
     env.state
 end
 
-function interact!(a, env::MountainCar)
+function interact!(env::MountainCar, a)
     if env.done
         reset!(env)
         return env.state, -1., env.done

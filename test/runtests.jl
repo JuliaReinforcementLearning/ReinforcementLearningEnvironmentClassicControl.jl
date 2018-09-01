@@ -5,10 +5,9 @@ else
     using Test
 end
 
-import ReinforcementLearningEnvironmentClassicControl: reset!, interact!, getstate
 for x in [CartPole, MountainCar, Pendulum]
     env = x()
     reset!(env)
-    @test typeof(interact!(1, env)) == Tuple{Array{Float64, 1}, Float64, Bool}
+    @test typeof(interact!(env, 1)) == Tuple{Array{Float64, 1}, Float64, Bool}
     @test typeof(getstate(env)) == Tuple{Array{Float64, 1}, Bool}
 end

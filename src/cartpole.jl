@@ -11,13 +11,16 @@ struct CartPoleParams{T}
     xthreshold::T
     maxsteps::Int64
 end
-mutable struct CartPole{T}
+
+mutable struct CartPole{T} <: AbstractEnv
     params::CartPoleParams{T}
-    observation_space::Box{T}
+    actionspace::DiscreteSpace
+    observation_space::BoxSpace{T}
     state::Array{T, 1}
     done::Bool
     t::Int64
 end
+
 function CartPole(; T = Float64, gravity = T(9.8), masscart = T(1.), 
                   masspole = T(.1), halflength = T(.5), forcemag = T(10.),
                   maxsteps = 200)
@@ -26,11 +29,13 @@ function CartPole(; T = Float64, gravity = T(9.8), masscart = T(1.),
                             T(.02), T(2 * 12 * π /360), T(2.4), maxsteps)
     high = [2 * params.xthreshold, T(1e38),
             2 * params.thetathreshold, T(1e38)]
-    cp = CartPole(params, Box(-high, high), 
+    cp = CartPole(params, DiscreteSpace(2, 1), BoxSpace(-high, high), 
                   zeros(T, 4), false, 0)
     reset!(cp)
     cp
 end
+
+actionspace(env::CartPole) = env.actionspace
 
 function reset!(env::CartPole{T}) where T <: Number
     env.state[:] = T(.1) * rand(T, 4) .- T(.05)
@@ -43,7 +48,7 @@ function getstate(env::CartPole)
     env.state, env.done
 end
 
-function interact!(a, env::CartPole{T}) where T <: Number
+function interact!(env::CartPole{T}, a) where T <: Number
     if env.done
         reset!(env)
         return env.state, 1., env.done

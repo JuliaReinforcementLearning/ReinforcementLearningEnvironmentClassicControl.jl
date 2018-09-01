@@ -1,12 +1,15 @@
 __precompile__()
 module ReinforcementLearningEnvironmentClassicControl
-using Reexport, GR, Compat
-@reexport using ReinforcementLearning
-import ReinforcementLearning: interact!, getstate, reset!, Box, plotenv
+using GR, Compat
+using ReinforcementLearningBase
+import ReinforcementLearningBase: interact!, getstate, reset!, actionspace
+export sample
 
 include("cartpole.jl")
 include("mountaincar.jl")
 include("pendulum.jl")
 
-export CartPole, MountainCar, Pendulum
+export CartPole, MountainCar, Pendulum,
+       interact!, getstate, reset!, actionspace
+
 end # module
