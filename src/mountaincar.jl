@@ -53,7 +53,7 @@ function interact!(env::MountainCar, a)
     env.done = x >= env.params.goalpos || env.t >= env.params.maxsteps
     env.state[1] = x
     env.state[2] = v
-    (observatioon=env.state, reward=-1., isdone=env.done)
+    (observation=env.state, reward=-1., isdone=env.done)
 end
 
 # adapted from https://github.com/JuliaML/Reinforce.jl/blob/master/src/envs/mountain_car.jl
