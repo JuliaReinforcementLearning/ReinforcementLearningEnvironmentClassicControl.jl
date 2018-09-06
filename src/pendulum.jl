@@ -11,7 +11,7 @@ end
 mutable struct Pendulum{T} <: AbstractEnv
     params::PendulumParams{T}
     actionspace::BoxSpace{T}
-    observation_space::BoxSpace{T}
+    observationspace::BoxSpace{T}
     state::Array{T, 1}
     done::Bool
     t::Int64
@@ -36,7 +36,6 @@ anglenormalize(x) = ((x + pi) % (2*pi)) - pi
 getstate(env::Pendulum) = (observation=pendulumobservation(env.state), isdone=env.done)
 
 function reset!(env::Pendulum{T}) where T
-    box = env.observation_space
     env.state[:] = 2 * rand(T, 2) .- 1
     env.t = 0
     env.done = false

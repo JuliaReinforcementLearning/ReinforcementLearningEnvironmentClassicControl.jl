@@ -9,7 +9,7 @@ end
 mutable struct MountainCar{T} <: AbstractEnv
     params::MountainCarParams{T}
     actionspace::DiscreteSpace
-    observation_space::BoxSpace{T}
+    observationspace::BoxSpace{T}
     state::Array{T, 1}
     done::Bool
     t::Int64

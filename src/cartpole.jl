@@ -15,7 +15,7 @@ end
 mutable struct CartPole{T} <: AbstractEnv
     params::CartPoleParams{T}
     actionspace::DiscreteSpace
-    observation_space::BoxSpace{T}
+    observationspace::BoxSpace{T}
     state::Array{T, 1}
     action::Int
     done::Bool
