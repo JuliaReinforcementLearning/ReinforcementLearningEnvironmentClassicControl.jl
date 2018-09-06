@@ -5,36 +5,40 @@ struct MountainCarParams{T}
     goalpos::T
     maxsteps::Int64
 end
-mutable struct MountainCar{T}
+
+mutable struct MountainCar{T} <: AbstractEnv
     params::MountainCarParams{T}
-    observation_space::Box{T}
+    actionspace::DiscreteSpace
+    observationspace::BoxSpace{T}
     state::Array{T, 1}
     done::Bool
     t::Int64
 end
+
 function MountainCar(; T = Float64, minpos = T(-1.2), maxpos = T(.6),
                        maxspeed = T(.07), goalpos = T(.5), maxsteps = 200)
-    env = MountainCar(MountainCarParams(minpos, maxpos, maxspeed, goalpos,
-                                        maxsteps),
-                      Box([minpos, -maxspeed], [maxpos, maxspeed]),
+    env = MountainCar(MountainCarParams(minpos, maxpos, maxspeed, goalpos, maxsteps),
+                      DiscreteSpace(3, 1),
+                      BoxSpace([minpos, -maxspeed], [maxpos, maxspeed]),
                       zeros(T, 2),
-                      false, 0)
+                      false,
+                      0)
     reset!(env)
     env
 end
 
-function getstate(env::MountainCar)
-    env.state, env.done
-end
+actionspace(env::MountainCar) = env.actionspace
+getstate(env::MountainCar) = (observation=env.state, isdone=env.done)
+
 function reset!(env::MountainCar{T}) where T
     env.state[1] = .2 * rand(T) - .6
     env.state[2] = 0.
     env.done = false
     env.t = 0
-    env.state
+    (observation=env.state,)
 end
 
-function interact!(a, env::MountainCar)
+function interact!(env::MountainCar, a)
     if env.done
         reset!(env)
         return env.state, -1., env.done
@@ -49,7 +53,7 @@ function interact!(a, env::MountainCar)
     env.done = x >= env.params.goalpos || env.t >= env.params.maxsteps
     env.state[1] = x
     env.state[2] = v
-    env.state, -1., env.done
+    (observation=env.state, reward=-1., isdone=env.done)
 end
 
 # adapted from https://github.com/JuliaML/Reinforce.jl/blob/master/src/envs/mountain_car.jl
