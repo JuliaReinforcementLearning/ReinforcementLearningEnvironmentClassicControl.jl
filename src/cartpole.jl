@@ -31,7 +31,7 @@ function CartPole(; T = Float64, gravity = T(9.8), masscart = T(1.),
     high = [2 * params.xthreshold, T(1e38),
             2 * params.thetathreshold, T(1e38)]
     cp = CartPole(params, DiscreteSpace(2, 1), BoxSpace(-high, high), 
-                  zeros(T, 4), false, 0)
+                  zeros(T, 4), 2, false, 0)
     reset!(cp)
     cp
 end
@@ -41,6 +41,7 @@ actionspace(env::CartPole) = env.actionspace
 function reset!(env::CartPole{T}) where T <: Number
     env.state[:] = T(.1) * rand(T, 4) .- T(.05)
     env.t = 0
+    env.action = 2
     env.done = false
     env.state
 end
