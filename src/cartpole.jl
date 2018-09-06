@@ -43,12 +43,10 @@ function reset!(env::CartPole{T}) where T <: Number
     env.t = 0
     env.action = 2
     env.done = false
-    env.state
+    (observation=env.state,)
 end
 
-function getstate(env::CartPole)
-    env.state, env.done
-end
+getstate(env::CartPole) = (observation=env.state, isdone=env.done)
 
 function interact!(env::CartPole{T}, a) where T <: Number
     if env.done
@@ -75,7 +73,7 @@ function interact!(env::CartPole{T}, a) where T <: Number
     env.done = abs(env.state[1]) > env.params.xthreshold ||
                abs(env.state[3]) > env.params.thetathreshold ||
                env.t >= env.params.maxsteps
-    env.state, 1., env.done
+    (observation=env.state, reward=1., isdone=env.done)
 end
 
 function plotendofepisode(x, y, d)

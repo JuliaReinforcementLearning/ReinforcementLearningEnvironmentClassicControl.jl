@@ -33,13 +33,14 @@ actionspace(env::Pendulum) = env.actionspace
 pendulumobservation(s) = [cos(s[1]), sin(s[1]), s[2]]
 anglenormalize(x) = ((x + pi) % (2*pi)) - pi
 
-getstate(env::Pendulum) = (pendulumobservation(env.state), env.done)
+getstate(env::Pendulum) = (observation=pendulumobservation(env.state), isdone=env.done)
+
 function reset!(env::Pendulum{T}) where T
     box = env.observation_space
     env.state[:] = 2 * rand(T, 2) .- 1
     env.t = 0
     env.done = false
-    pendulumobservation(env.state)
+    (observation=pendulumobservation(env.state),)
 end
 
 function interact!(env::Pendulum, a)
@@ -58,5 +59,5 @@ function interact!(env::Pendulum, a)
     env.state[1] = th
     env.state[2] = newthdot
     env.done = env.t >= env.params.maxsteps
-    pendulumobservation(env.state), -costs, env.done
+    (observation=pendulumobservation(env.state), reward=-costs, isdone=env.done)
 end

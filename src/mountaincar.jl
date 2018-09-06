@@ -28,17 +28,14 @@ function MountainCar(; T = Float64, minpos = T(-1.2), maxpos = T(.6),
 end
 
 actionspace(env::MountainCar) = env.actionspace
-
-function getstate(env::MountainCar)
-    env.state, env.done
-end
+getstate(env::MountainCar) = (observation=env.state, isdone=env.done)
 
 function reset!(env::MountainCar{T}) where T
     env.state[1] = .2 * rand(T) - .6
     env.state[2] = 0.
     env.done = false
     env.t = 0
-    env.state
+    (observation=env.state,)
 end
 
 function interact!(env::MountainCar, a)
@@ -56,7 +53,7 @@ function interact!(env::MountainCar, a)
     env.done = x >= env.params.goalpos || env.t >= env.params.maxsteps
     env.state[1] = x
     env.state[2] = v
-    env.state, -1., env.done
+    (observatioon=env.state, reward=-1., isdone=env.done)
 end
 
 # adapted from https://github.com/JuliaML/Reinforce.jl/blob/master/src/envs/mountain_car.jl
