@@ -17,6 +17,7 @@ mutable struct CartPole{T} <: AbstractEnv
     actionspace::DiscreteSpace
     observation_space::BoxSpace{T}
     state::Array{T, 1}
+    action::Int
     done::Bool
     t::Int64
 end
@@ -53,6 +54,7 @@ function interact!(env::CartPole{T}, a) where T <: Number
         reset!(env)
         return env.state, 1., env.done
     end
+    env.action = a
     env.t += 1
     force = a == 2 ? env.params.forcemag : -env.params.forcemag
     x, xdot, theta, thetadot = env.state
@@ -84,7 +86,8 @@ function plotendofepisode(x, y, d)
     end
     return nothing
 end
-function plotenv(env::CartPole, s, a, r, d)
+function plotenv(env::CartPole)
+    s, a, d = env.state, env.action, env.done
     x, xdot, theta, thetadot = s
     l = 2 * env.params.halflength
     clearws()
