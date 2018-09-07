@@ -1,5 +1,4 @@
-using ReinforcementLearningEnvironmentClassicControl
-using Compat: @info
+using ReinforcementLearningEnvironmentClassicControl, ReinforcementLearning
 
 env = MountainCar(maxsteps = 10^4)
 high = [.5, .07]
@@ -10,8 +9,8 @@ preprocessor = TilingStateAggregator(p0, 8)
 rlsetup = RLSetup(Sarsa(ns = 8*8^2, na = 3, α = 1/8, λ = .96, γ = 1.), 
                   env, ConstantNumberSteps(400),
                   preprocessor = preprocessor,
-                  policy = EpsilonGreedyPolicy(0),
                   callbacks = [Visualize(wait = .02)])
+rlsetup.policy.ϵ = 0
 @info("Before learning.") 
 run!(rlsetup)
 rlsetup.callbacks = [EvaluationPerEpisode(TimeSteps())]

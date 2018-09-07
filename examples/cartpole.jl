@@ -1,5 +1,4 @@
-using ReinforcementLearningEnvironmentClassicControl
-using Compat: @info
+using ReinforcementLearningEnvironmentClassicControl, ReinforcementLearning
 
 env = CartPole()
 rlsetup = RLSetup(ActorCriticPolicyGradient(ns = 4, na = 2, α = .02, 

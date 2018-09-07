@@ -11,6 +11,7 @@ mutable struct MountainCar{T} <: AbstractEnv
     actionspace::DiscreteSpace
     observationspace::BoxSpace{T}
     state::Array{T, 1}
+    action::Int64
     done::Bool
     t::Int64
 end
@@ -21,6 +22,7 @@ function MountainCar(; T = Float64, minpos = T(-1.2), maxpos = T(.6),
                       DiscreteSpace(3, 1),
                       BoxSpace([minpos, -maxspeed], [maxpos, maxspeed]),
                       zeros(T, 2),
+                      1,
                       false,
                       0)
     reset!(env)
@@ -39,10 +41,6 @@ function reset!(env::MountainCar{T}) where T
 end
 
 function interact!(env::MountainCar, a)
-    if env.done
-        reset!(env)
-        return env.state, -1., env.done
-    end
     env.t += 1
     x, v = env.state
     v += (a - 2)*0.001 + cos(3*x)*(-0.0025)
@@ -60,7 +58,9 @@ end
 height(xs) = sin(3 * xs)*0.45 + 0.55
 rotate(xs, ys, θ) = xs*cos(θ) - ys*sin(θ), ys*cos(θ) + xs*sin(θ)
 translate(xs, ys, t) = xs .+ t[1], ys .+ t[2]
-function plotenv(env::MountainCar, s, a, r, d)
+function plotenv(env::MountainCar)
+    s = env.state
+    d = env.done
     clearws()
     setviewport(0, 1, 0, 1)
     setwindow(env.params.minpos - .1, env.params.maxpos + .2, -.1,

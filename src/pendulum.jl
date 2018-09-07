@@ -42,11 +42,8 @@ function reset!(env::Pendulum{T}) where T
     (observation=pendulumobservation(env.state),)
 end
 
+interact!(env::Pendulum, a::AbstractArray) = interact!(env, a[1])
 function interact!(env::Pendulum, a)
-    if env.done
-        reset!(env)
-        return pendulumobservation(env.state), 0., env.done
-    end
     env.t += 1
     th, thdot = env.state
     a = clamp(a, -env.params.maxtorque, env.params.maxtorque)
