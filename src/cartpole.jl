@@ -49,10 +49,6 @@ end
 getstate(env::CartPole) = (observation=env.state, isdone=env.done)
 
 function interact!(env::CartPole{T}, a) where T <: Number
-    if env.done
-        reset!(env)
-        return env.state, 1., env.done
-    end
     env.action = a
     env.t += 1
     force = a == 2 ? env.params.forcemag : -env.params.forcemag

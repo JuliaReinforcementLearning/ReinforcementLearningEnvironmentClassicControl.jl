@@ -1,7 +1,8 @@
 # run this file with julia -p 4 to use 4 cores in the comparison
-using JLD2, Compat.Distributed
+using JLD2, Distributed
 @everywhere begin
-using ReinforcementLearningEnvironmentClassicControl, Flux
+using ReinforcementLearningEnvironmentClassicControl, Flux,
+ReinforcementLearning
 getenv() = (CartPole(), 4, 2)
 # getenv() = (MountainCar(maxsteps = 10^4), 2, 3)
 function setup(learner, env, preprocessor = NoPreprocessor())
@@ -32,7 +33,7 @@ function tilingsarsa(i)
     if typeof(env) <: CartPole
         high = [2.6, 4, .24, 3.4]
         low = -high
-        nbins = 20 * ones(4)
+        nbins = 20 * ones(Int64, 4)
         initvalue = 200
     elseif typeof(env) <: MountainCar
         high = [.5, .07]
@@ -45,7 +46,7 @@ function tilingsarsa(i)
     learner = Sarsa(ns = 8*prod(nbins), na = na, λ = 0, α = .2/8, 
                     initvalue = initvalue)
     s = setup(learner, env, preprocessor)
-    s.policy = EpsilonGreedyPolicy(0)
+    s.policy.ϵ = 0
     s
 end
 rlsetupcreators = Dict("linear ACPG" => acpg, "DQN" => dqn, 
